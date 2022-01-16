@@ -1,5 +1,10 @@
 !pip install pytest
 from happytransformer import HappyTextToText, TTSettings
+from fastapi.testclient import TestClient
+from main import app
+
+client = TestClient(app)
+
 
 happy_tt = HappyTextToText("T5", "vennify/t5-base-grammar-correction")
 
