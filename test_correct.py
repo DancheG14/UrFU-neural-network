@@ -41,6 +41,6 @@ def test_uncorrect(text2):
 text = "grammar: This sentence has bad grammar!"
 text2 = "grammar: This sentence has has bads grammar!"
 
-result = correct(text2)
+result = correct(text)
 result2 = correct(text2)
 	
