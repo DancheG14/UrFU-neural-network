@@ -1,4 +1,4 @@
-pip install pytest
+#pip install pytest
 pip install happytransformer
 from happytransformer import HappyTextToText, TTSettings
 import requests
