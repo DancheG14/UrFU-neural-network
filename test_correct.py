@@ -1,14 +1,25 @@
+pip install pytest
+from fastapi import FastAPI
+from fastapi.testclient import TestClient
+from main import app
+
+client = TestClient(app)
 from happytransformer import HappyTextToText, TTSettings
+from pydantic import BaseModel
 
 happy_tt = HappyTextToText("T5", "vennify/t5-base-grammar-correction")
 
 args = TTSettings(num_beams=5, min_length=1)
-text = input()
+text = 'This sentence has has bads grammar!'
 # Add the prefix "grammar: " before each input
 result = happy_tt.generate_text(f'{text}.', args=args)
 
 print(result.text) # This sentence has bad grammar.
 
+def test_read_main():
+    response = client.get("/")
+    assert response.status_code == 200
+    assert response.json() == {"message": "Hello People"}
 
 def correct(text):
   result = happy_tt.generate_text(f'{text}.', args=args)
