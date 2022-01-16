@@ -11,9 +11,9 @@ args = TTSettings(num_beams=5, min_length=1)
 
 @app.get("/")
 def root():
-    return {"message": "Hello World"}
+    return {"message": "Hello People"}
 
-@app.post("/predict/")
-def predict(item: Item):
+@app.post("/correct/")
+def correct(item: Item):
       return happy_tt.generate_text(f'{item.text}.', args=args).text
 
