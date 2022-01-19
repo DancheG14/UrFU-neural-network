@@ -9,15 +9,6 @@ from main import app
 
 client = TestClient(app)
 
-happy_tt = HappyTextToText("T5", "vennify/t5-base-grammar-correction")
-
-args = TTSettings(num_beams=5, min_length=1)
-
-text = 'grammar: This sentence has has bads grammar!'
-# Add the prefix "grammar: " before each input
-result = happy_tt.generate_text(f'{text}.', args=args)
-
-print(result.text) # This sentence has bad grammar.
 
 
 def correct(text):
