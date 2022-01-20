@@ -1,19 +1,24 @@
 from fastapi import FastAPI
-from happytransformer import HappyTextToText, TTSettings
+from transformers import pipeline
 from pydantic import BaseModel
 
 class Item(BaseModel):
     text: str
 
 app = FastAPI()
-happy_tt = HappyTextToText("T5", "vennify/t5-base-grammar-correction")
-args = TTSettings(num_beams=5, min_length=1)
+
+classifier = pipeline("sentiment-analysis",   
+                      "blanchefort/rubert-base-cased-sentiment")
+
+print(classifier("Привет! Как дела?"))
+print(classifier("Привет! Я убью тебя лодочнин!"))
+print(classifier("Привет! Я люблю тебя!"))
 
 @app.get("/")
 def root():
-    return {"message": "Hello People"}
+    return {"message": "Hello UrFU"}
 
-@app.post("/correct/")
-def correct(item: Item):
-      return happy_tt.generate_text(f'{item.text}.', args=args).text
+@app.post("/predict/") 
+def predict(item: Item):
+    return classifier(item.text)[0]
 
