@@ -7,8 +7,7 @@ class Item(BaseModel):
 
 app = FastAPI()
 
-classifier = pipeline("sentiment-analysis",   
-                      "blanchefort/rubert-base-cased-sentiment")
+classifier = pipeline("sentiment-analysis", "blanchefort/rubert-base-cased-sentiment")
 
 print(classifier("Привет! Как дела?"))
 print(classifier("Привет! Я убью тебя лодочнин!"))
