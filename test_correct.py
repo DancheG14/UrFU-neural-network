@@ -1,38 +1,41 @@
-pip install pytest
-pip install happytransformer
-
-from happytransformer import HappyTextToText, TTSettings
-import requests
-import json
 from fastapi.testclient import TestClient
 from main import app
+
 
 client = TestClient(app)
 
 
+def test_read_main():
+    response = client.get("/")
+    assert response.status_code == 200
+    assert response.json() == {"message": "Hello UrFU"}
 
-def correct(text):
-  response = client.post("/correct/",
-    json={"text": "grammar: This sentence has has bad grammar!"}
-    )
-    json_data = response.json() 
 
-  assert response.status_code == 200
-  result = happy_tt.generate_text(f'{json}.', args=args)
-  return result.text
-
-def test_uncorrect(text2):
-  response = client.post("/correct/",
-    json={"text": "grammar: This sentence has bad grammar!"}
-    )
+def test_read_predict_positive():
+    response = client.post("/predict/",
+                           json={"text": "Прекрасный вечер!"}
+                           )
     json_data = response.json()
-  result2 = happy_tt.generate_text(f'{json}.', args=args)
-  return result2.text2
-  assert response.status_code == 200
 
-text = "grammar: This sentence has bad grammar!"
-text2 = "grammar: This sentence has has bads grammar!"
+    assert response.status_code == 200
+    assert json_data['label'] == 'POSITIVE'
 
-result = correct(text)
-result2 = correct(text2)
-	
+
+def test_read_predict_negative():
+    response = client.post("/predict/",
+                           json={"text": "Все плохо!"}
+                           )
+    json_data = response.json()
+
+    assert response.status_code == 200
+    assert json_data['label'] == 'NEGATIVE'
+
+
+def test_read_predict_neutral():
+    response = client.post("/predict/",
+                           json={"text": "Это неважно, обычный день"}
+                           )
+    json_data = response.json()
+
+    assert response.status_code == 200
+    assert json_data['label'] == 'NEUTRAL'
